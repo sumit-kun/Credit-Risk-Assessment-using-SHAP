@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CrediSense — Intelligent Credit Risk Assessment</title>
+<meta name="description" content="Evaluate credit risk using a machine learning model. Enter applicant details to generate an instant risk assessment." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header">
+  <div class="site-header__inner">
+
+    <a href="#dashboard" class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+          <path d="M14 2 L25 7.5 V16.5 C25 21.5 20.5 25 14 26.5 C7.5 25 3 21.5 3 16.5 V7.5 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M9.5 14.5 L12.5 17.5 L18.5 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">CrediSense</span>
+        <span class="brand__subtitle">Intelligent Credit Risk Assessment</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#prediction">Prediction</a>
+      <a href="#about">About the model</a>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" title="Toggle theme">
+        <i data-lucide="sun" class="icon icon--sun"></i>
+        <i data-lucide="moon" class="icon icon--moon"></i>
+      </button>
+
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <i data-lucide="menu" class="icon icon--open"></i>
+        <i data-lucide="x" class="icon icon--close"></i>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="dashboard">
+    <div class="hero__inner">
+      <span class="badge">
+        <span class="badge__dot" aria-hidden="true"></span>
+        ML-powered risk analysis
+      </span>
+      <h1>Smarter credit risk assessment</h1>
+      <p class="hero__sub">
+        Evaluate credit risk using machine learning. Enter applicant details to generate a risk assessment in seconds.
+      </p>
+      <a href="#prediction" class="btn btn--primary btn--lg">
+        Start an assessment
+        <i data-lucide="arrow-right" class="icon"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ PREDICTION ============ -->
+  <section class="prediction" id="prediction">
+    <div class="prediction__inner">
+
+      <div class="section-intro">
+        <h2>Applicant assessment</h2>
+        <p>All fields are required. Figures are used exactly as entered — there's no rounding beyond what you provide.</p>
+      </div>
+
+      <div class="panel">
+        <form id="risk-form" novalidate>
+
+          <fieldset class="form-section">
+            <legend>Personal information</legend>
+
+            <div class="field">
+              <label for="person_age">Age</label>
+              <input type="number" id="person_age" name="person_age" min="18" max="100" step="1" placeholder="e.g. 28" required />
+              <p class="field__help">Applicant's age in years.</p>
+              <p class="field__error" data-error-for="person_age"></p>
+            </div>
+
+            <div class="field">
+              <label for="person_income">Annual income (USD)</label>
+              <input type="number" id="person_income" name="person_income" min="0" step="100" placeholder="e.g. 52000" required />
+              <p class="field__help">Gross annual income before tax.</p>
+              <p class="field__error" data-error-for="person_income"></p>
+            </div>
+
+            <div class="field">
+              <label for="person_emp_length">Employment length (years)</label>
+              <input type="number" id="person_emp_length" name="person_emp_length" min="0" max="60" step="0.5" placeholder="e.g. 4" required />
+              <p class="field__help">Time with current employer.</p>
+              <p class="field__error" data-error-for="person_emp_length"></p>
+            </div>
+
+            <div class="field">
+              <label for="person_home_ownership">Home ownership</label>
+              <select id="person_home_ownership" name="person_home_ownership" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="RENT">Rent</option>
+                <option value="MORTGAGE">Mortgage</option>
+                <option value="OWN">Own</option>
+                <option value="OTHER">Other</option>
+              </select>
+              <p class="field__help">Applicant's current housing situation.</p>
+              <p class="field__error" data-error-for="person_home_ownership"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Financial information</legend>
+
+            <div class="field">
+              <label for="loan_intent">Loan purpose</label>
+              <select id="loan_intent" name="loan_intent" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="PERSONAL">Personal</option>
+                <option value="EDUCATION">Education</option>
+                <option value="MEDICAL">Medical</option>
+                <option value="VENTURE">Venture</option>
+                <option value="HOMEIMPROVEMENT">Home improvement</option>
+                <option value="DEBTCONSOLIDATION">Debt consolidation</option>
+              </select>
+              <p class="field__help">What the loan will be used for.</p>
+              <p class="field__error" data-error-for="loan_intent"></p>
+            </div>
+
+            <div class="field">
+              <label for="loan_grade">Loan grade</label>
+              <select id="loan_grade" name="loan_grade" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+              </select>
+              <p class="field__help">Grade assigned by the loan issuer.</p>
+              <p class="field__error" data-error-for="loan_grade"></p>
+            </div>
+
+            <div class="field">
+              <label for="loan_amnt">Loan amount (USD)</label>
+              <input type="number" id="loan_amnt" name="loan_amnt" min="0" step="100" placeholder="e.g. 10000" required />
+              <p class="field__help">Total amount requested.</p>
+              <p class="field__error" data-error-for="loan_amnt"></p>
+            </div>
+
+            <div class="field">
+              <label for="loan_int_rate">Interest rate (%)</label>
+              <input type="number" id="loan_int_rate" name="loan_int_rate" min="0" max="40" step="0.1" placeholder="e.g. 11.5" required />
+              <p class="field__help">Annual interest rate offered.</p>
+              <p class="field__error" data-error-for="loan_int_rate"></p>
+            </div>
+
+            <div class="field">
+              <label for="loan_percent_income">Loan as share of income</label>
+              <input type="number" id="loan_percent_income" name="loan_percent_income" min="0" max="1" step="0.01" placeholder="e.g. 0.2" required />
+              <p class="field__help">As a decimal — 0.2 means the loan is 20% of annual income.</p>
+              <p class="field__error" data-error-for="loan_percent_income"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Credit profile</legend>
+
+            <div class="field">
+              <label for="cb_person_default_on_file">Prior default on file</label>
+              <select id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="N">No</option>
+                <option value="Y">Yes</option>
+              </select>
+              <p class="field__help">Whether a previous default appears on record.</p>
+              <p class="field__error" data-error-for="cb_person_default_on_file"></p>
+            </div>
+
+            <div class="field">
+              <label for="cb_person_cred_hist_length">Credit history length (years)</label>
+              <input type="number" id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" min="0" max="60" step="1" placeholder="e.g. 4" required />
+              <p class="field__help">Years since the applicant's credit file was opened.</p>
+              <p class="field__error" data-error-for="cb_person_cred_hist_length"></p>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="reset" class="btn btn--ghost" id="reset-btn">
+              <i data-lucide="rotate-ccw" class="icon"></i>
+              Reset form
+            </button>
+            <button type="submit" class="btn btn--primary" id="submit-btn">
+              <span class="btn__label">
+                <i data-lucide="shield-check" class="icon"></i>
+                Analyze credit risk
+              </span>
+              <span class="btn__spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- LOADING STATE -->
+      <div class="panel result-panel" id="loading-state" hidden aria-live="polite">
+        <div class="loading">
+          <span class="loading__spinner" aria-hidden="true"></span>
+          <p>Analyzing applicant profile…</p>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="panel result-panel" id="result-state" hidden aria-live="polite">
+
+        <div class="result__top">
+          <div>
+            <p class="result__eyebrow">Predicted outcome</p>
+            <div class="result__verdict" id="verdict-tag">
+              <i data-lucide="check-circle-2" class="icon" id="verdict-icon"></i>
+              <span id="verdict-text">Low risk</span>
+            </div>
+          </div>
+          <div class="result__figure-block">
+            <span class="result__figure" id="prob-figure">0.0%</span>
+            <span class="result__figure-label">default probability</span>
+          </div>
+        </div>
+
+        <div class="risk-bar">
+          <div class="risk-bar__track">
+            <div class="risk-bar__fill" id="risk-fill"></div>
+            <div class="risk-bar__threshold" id="risk-threshold"></div>
+          </div>
+          <div class="risk-bar__labels">
+            <span>Lower risk</span>
+            <span>Higher risk</span>
+          </div>
+        </div>
+
+        <dl class="breakdown">
+          <div class="breakdown__row">
+            <dt>Model threshold</dt>
+            <dd id="threshold-figure">—</dd>
+          </div>
+          <div class="breakdown__row">
+            <dt>Prediction</dt>
+            <dd id="prediction-figure">—</dd>
+          </div>
+        </dl>
+
+        <p class="result__note">
+          This is a probability estimate from a statistical model, not a certainty. Use it as one input among several when reviewing an application.
+        </p>
+
+        <button type="button" class="btn btn--ghost" id="analyze-another-btn">
+          <i data-lucide="rotate-ccw" class="icon"></i>
+          Analyze another applicant
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ ABOUT MODEL ============ -->
+  <section class="about" id="about">
+    <div class="about__inner">
+      <h2>About the model</h2>
+      <p>
+        CrediSense scores each application with a machine learning model trained on historical loan
+        outcomes. Given the applicant and loan details above, it estimates the probability of default
+        and compares that estimate against a fixed decision threshold to arrive at a low-risk or
+        high-risk read.
+      </p>
+      <div class="disclaimer">
+        <i data-lucide="info" class="icon"></i>
+        <p>Predictions are informational and should not be used as the sole basis for a lending decision.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <span>© <span id="year"></span> CrediSense</span>
+    <span>Built with FastAPI and scikit-learn</span>
+  </div>
+</footer>
+
+<div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+<script src="https://unpkg.com/lucide@0.294.0/dist/umd/lucide.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
